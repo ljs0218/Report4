@@ -50,6 +50,9 @@ struct User* get_user(int id);
 struct Product* get_product(char code);
 int priceToPoint(int price);
 
+void swapUsers(struct User* a, struct User* b);
+void sortByTotal(struct User* users, int size);
+
 struct Product products[PRODUCT_MAX_SIZE] = {
 	{ 'A', "Apple", 12000, 50 },
 	{ 'B', "Bread", 8000, 30 },
@@ -142,6 +145,25 @@ int priceToPoint(int price) {
 	}
 	else {
 		return (int)(0.07 * price);
+	}
+}
+
+void swapUsers(struct User* a, struct User* b) {
+	struct User temp = *a;
+	*a = *b;
+	*b = temp;
+}
+
+void sortByTotal(struct User* users, int size) {
+	for (int i = 0; i < size - 1; i++) {
+		int max_index = i;
+		for (int j = i + 1; j < size; j++) {
+			if (users[j].total > users[max_index].total) {
+				max_index = j;
+			}
+		}
+
+		swapUsers(&users[i], &users[max_index]);
 	}
 }
 
@@ -267,25 +289,6 @@ void menu_admin() {
 
 		system("pause");
 		system("cls");
-	}
-}
-
-void swapUsers(struct User* a, struct User* b) {
-	struct User temp = *a;
-	*a = *b;
-	*b = temp;
-}
-
-void sortByTotal(struct User* users, int size) {
-	for (int i = 0; i < size - 1; i++) {
-		int max_index = i;
-		for (int j = i + 1; j < size; j++) {
-			if (users[j].total > users[max_index].total) {
-				max_index = j;
-			}
-		}
-
-		swapUsers(&users[i], &users[max_index]);
 	}
 }
 
